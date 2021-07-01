@@ -89,6 +89,7 @@
   <ItemGroup>
     <Reference Include="SamplesCommon">
       <HintPath>..\..\..\Desktop\ModernWpf-0.9.4\samples\SamplesCommon\bin\Release\netcoreapp3.1\SamplesCommon.dll</HintPath>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
 
