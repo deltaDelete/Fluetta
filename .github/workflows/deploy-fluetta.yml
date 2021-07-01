@@ -33,6 +33,6 @@ jobs:
       - uses: csexton/release-asset-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: Fluetta/bin/Release/netcoreapp3.1/win-x64/publish/*.exe
+          pattern: bin/Release/netcoreapp3.1/win-x64/publish/*.exe
           release-url: ${{ steps.create_release.outputs.upload_url }}
       
