@@ -88,8 +88,7 @@
 
   <ItemGroup>
     <Reference Include="SamplesCommon">
-      <HintPath>..\..\..\Desktop\ModernWpf-0.9.4\samples\SamplesCommon\bin\Release\netcoreapp3.1\SamplesCommon.dll</HintPath>
-      <Private>true</Private>
+      <HintPath>Libraries\SamplesCommon.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -109,6 +108,12 @@
     <EmbeddedResource Update="Properties\Resources.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Libraries\SamplesCommon.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
