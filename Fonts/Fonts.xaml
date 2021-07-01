@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.modernwpf.com/2019">
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="Window" BasedOn="{StaticResource DefaultWindowStyle}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="Page" BasedOn="{StaticResource {x:Type Page}}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="ui:Page" BasedOn="{StaticResource {x:Type ui:Page}}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="ui:Frame" BasedOn="{StaticResource {x:Type ui:Frame}}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="Frame" BasedOn="{StaticResource {x:Type Frame}}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="ui:NavigationViewItemHeader" BasedOn="{StaticResource NavigationViewItemHeaderTextStyle}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource DefaultComboBoxItemStyle}">
+        <Setter Property="FontFamily" Value="/Fluetta;component/Fonts/#Segoe UI" />
+    </Style>
+    <FontFamily x:Key="SegoeUI">pack://application:,,,/Fonts/#Segoe UI</FontFamily>
+    <FontFamily x:Key="SegoeMDL2">pack://application:,,,/Fonts/#Segoe MDL2 Assets</FontFamily>
+</ResourceDictionary>

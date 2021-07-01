@@ -1,0 +1,28 @@
+﻿<Page x:Class="Fluetta.Pages.AccountPages.OfflineLogin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Fluetta.Pages.AccountPages"
+      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:res="clr-namespace:Fluetta.Properties"
+      mc:Ignorable="d" 
+      d:DesignHeight="312" d:DesignWidth="225" d:Background="White"
+      Title="OfflineLogin">
+
+    <Grid fw:PointerTracker.Enabled="True">
+        <ui:SimpleStackPanel Spacing="20" Margin="{StaticResource ControlPageContentMargin}">
+            <TextBlock Text="{x:Static res:Resources.Offline}" Style="{DynamicResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
+            <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.SignIn}"/>
+            <Grid>
+                <TextBox x:Name="LoginTextBox" Panel.ZIndex="1" IsKeyboardFocusedChanged="LoginTextBox_IsKeyboardFocusedChanged"/>
+                <TextBlock x:Name="LoginHint" FontSize="14" Padding="11 6"  Text="{x:Static res:Resources.Nickname}" Panel.ZIndex="0"/>
+            </Grid>
+            <ui:SimpleStackPanel Spacing="4" Orientation="Horizontal" Height="38" HorizontalAlignment="Center">
+                <Button Style="{StaticResource DefaultButtonStyle}" Content="{x:Static res:Resources.Back}" Click="CancelClick" Width="84"/>
+                <Button IsDefault="True" Style="{StaticResource AccentButtonStyle}" Content="{x:Static res:Resources.LoginBtn}" Click="LoginClick" Width="84"/>
+            </ui:SimpleStackPanel>
+        </ui:SimpleStackPanel>
+    </Grid>
+</Page>
