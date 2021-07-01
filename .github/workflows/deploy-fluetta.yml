@@ -6,7 +6,7 @@ on:
       - "fluetta/v*"
 
 env:
-  PROJECT_PATH: Fluetta/Fluetta.csproj
+  PROJECT_PATH: Fluetta.csproj
 
 jobs:
   deploy:
