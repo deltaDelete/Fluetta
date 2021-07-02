@@ -13,6 +13,8 @@ namespace Fluetta.Pages
     /// </summary>
     public partial class Settings : Page
     {
+        int onLoadIndex;
+        int changedIndex;
         public Settings()
         {
             InitializeComponent();
@@ -34,12 +36,15 @@ namespace Fluetta.Pages
             SettingsData.resY = ResY.Text;
             SettingsData.javaPath = JavaPath.Text;
             SettingsData.jvmArgs = JVMArgs.Text;
-            ModernWpf.Controls.ContentDialog contentDialog = new ModernWpf.Controls.ContentDialog()
+            if (onLoadIndex != changedIndex) 
             {
-                PrimaryButtonText = Properties.Resources.Ok,
-                Title = Properties.Resources.ContextDialogApplied,
-            };
-            await contentDialog.ShowAsync();
+                ModernWpf.Controls.ContentDialog contentDialog = new ModernWpf.Controls.ContentDialog()
+                {
+                    PrimaryButtonText = Properties.Resources.Ok,
+                    Title = Properties.Resources.ContextDialogApplied,
+                };
+                await contentDialog.ShowAsync(); 
+            }
             File.WriteAllText(@".\launcher_settings.json", JsonConvert.SerializeObject(SettingsData.ToObject()));
             System.Diagnostics.Debug.WriteLine("[!] Apply pressed");
         }
@@ -121,9 +126,11 @@ namespace Fluetta.Pages
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             ComboBox.SelectedIndex = SettingsData.language == "en-US" ? 1 : SettingsData.language == "ru-RU" ? 2 : 0;
+            onLoadIndex = ComboBox.SelectedIndex;
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            changedIndex = ComboBox.SelectedIndex;
         }
 
         private void BrowseClick(object sender, RoutedEventArgs e)
