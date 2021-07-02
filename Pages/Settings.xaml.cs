@@ -41,7 +41,8 @@ namespace Fluetta.Pages
                 ModernWpf.Controls.ContentDialog contentDialog = new ModernWpf.Controls.ContentDialog()
                 {
                     PrimaryButtonText = Properties.Resources.Ok,
-                    Title = Properties.Resources.ContextDialogApplied,
+                    Title = Properties.Resources.Attention,
+                    Content = Properties.Resources.ContextDialogApplied
                 };
                 await contentDialog.ShowAsync(); 
             }

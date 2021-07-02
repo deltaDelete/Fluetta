@@ -11,10 +11,47 @@
       d:DesignHeight="450" d:DesignWidth="760" d:Background="White"
       Loaded="Page_Loaded"
       Title="Instances">
-
-    <ScrollViewer>
-        <ui:SimpleStackPanel Spacing="24" Margin="{StaticResource ControlPageContentMargin}">
-            <ui:ListView x:Name="ListView"/>
-        </ui:SimpleStackPanel>
-    </ScrollViewer>
+    <Grid>
+        <ScrollViewer>
+            <!--<ui:SimpleStackPanel Spacing="24" Margin="{StaticResource ControlPageContentMargin}">
+                <ui:ListView x:Name="ListView"/>
+            </ui:SimpleStackPanel>-->
+            <ui:SimpleStackPanel>
+                <ui:GridView x:Name="InstanceGrid" SelectionMode="Single">
+                    <ui:GridView.ItemContainerStyle>
+                        <Style TargetType="ui:GridViewItem">
+                            <Setter Property="Margin" Value="10" />
+                        </Style>
+                    </ui:GridView.ItemContainerStyle>
+                    <ui:GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <ui:ThemeShadowChrome Depth="30">
+                                    <Grid Width="216" Height="128">
+                                        <Rectangle RadiusX="4" RadiusY="4" Fill="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+                                        <ui:SimpleStackPanel Spacing="10">
+                                            <TextBlock Text="{Binding Name}" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5 10"/>
+                                            <TextBlock Text="{Binding VersionId}" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                            <ui:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Spacing="5">
+                                                <Button Content="{x:Static res:Resources.Edit}" Click="EditClick"/>
+                                                <Button Content="{x:Static res:Resources.Delete}" Click="DeleteClick"/>
+                                            </ui:SimpleStackPanel>
+                                        </ui:SimpleStackPanel>
+                                    </Grid>
+                                </ui:ThemeShadowChrome>
+                            </Grid>
+                        </DataTemplate>
+                    </ui:GridView.ItemTemplate>
+                    <ui:GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Margin="25" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ui:GridView.ItemsPanel>
+                </ui:GridView>
+            </ui:SimpleStackPanel>
+        </ScrollViewer>
+        <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10" Click="NewInstanceClick" Style="{DynamicResource AccentButtonStyle}">
+            <ui:FontIcon FontFamily="{StaticResource SegoeMDL2}" Glyph="&#xE710;"/>
+        </Button>
+    </Grid>
 </Page>

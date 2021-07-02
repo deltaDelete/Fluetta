@@ -129,6 +129,9 @@
   <data name="Apply" xml:space="preserve">
     <value>Применить</value>
   </data>
+  <data name="Attention" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
@@ -144,6 +147,12 @@
   <data name="ContextDialogApplied" xml:space="preserve">
     <value>Некоторые настройки будут применены после перезапуска приложения</value>
   </data>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="CreateInstance" xml:space="preserve">
+    <value>Создать сборку</value>
+  </data>
   <data name="CurrentLoginMethod" xml:space="preserve">
     <value>Текущий метод входа</value>
   </data>
@@ -153,11 +162,23 @@
   <data name="DarkTheme" xml:space="preserve">
     <value>Тёмная тема</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="DeletionDialog" xml:space="preserve">
+    <value>Вы действительно ходите удалить эту сборку?</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>Электронная почта</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
+  </data>
+  <data name="FolderName" xml:space="preserve">
+    <value>Название папки</value>
   </data>
   <data name="HomePage" xml:space="preserve">
     <value>Домашняя страница</value>
@@ -207,8 +228,17 @@
   <data name="MojangLogin" xml:space="preserve">
     <value>Вход через Mojang</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="NameIsEmpty" xml:space="preserve">
+    <value>Имя сборки не может быть пустым</value>
+  </data>
   <data name="Nickname" xml:space="preserve">
     <value>Ник</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Офлайн</value>
@@ -234,6 +264,9 @@
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
   <data name="SignIn" xml:space="preserve">
     <value>Вход</value>
   </data>
@@ -248,5 +281,8 @@
   </data>
   <data name="Version" xml:space="preserve">
     <value>Версия </value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
   </data>
 </root>

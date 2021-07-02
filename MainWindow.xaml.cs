@@ -3,11 +3,15 @@ using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
+using static Fluetta.Pages.Settings;
 
 namespace Fluetta
 {
     public partial class MainWindow
     {
+        public static List<string> versionIds = new List<string>();
+        public static string latestRelease;
         public MainWindow()
         {
             //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
@@ -29,9 +33,20 @@ namespace Fluetta
             {
                 File.WriteAllText(Settings.SettingsData.minecraftPath + "\\launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
             }
+            LoadVersions();
             Instances.InstanceList = Instances.ListDirs(Settings.SettingsData.minecraftPath);
             InitializeComponent();
         }
+        public async static void LoadVersions()
+        {
+            CmlLib.Core.Version.MVersionCollection versions = await new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersionsAsync();
+            foreach (CmlLib.Core.Version.MVersionMetadata versionMetadata in versions)
+            {
+                versionIds.Add(versionMetadata.Name);
+            }
+            latestRelease = versions.LatestReleaseVersion.Name;
+        }
+
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
         {

@@ -70,5 +70,32 @@ namespace Fluetta
             }
             return path;
         }
+
+        public static List<Instance> GetInstanceObjects(string path)
+        {
+            List<Instance> objects = new List<Instance>();
+            foreach (string instancePath in ListDirs(path))
+            {
+                /*
+                objects.Add(new Instance()
+                {
+                    Name = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).Name,
+                    VersionId = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).VersionId,
+                    Created = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).Created,
+                    LastUsed = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).LastUsed,
+                    InstanceDir = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).InstanceDir,
+                    JavaDir = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).JavaDir,
+                    ResX = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).ResX,
+                    ResY = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).ResY,
+                    JVMArgs = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).JVMArgs,
+                    MaxRAM = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).MaxRAM
+                }
+                );
+                */
+                objects.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")));
+            }
+            return objects;
+        }
+
     }
 }
