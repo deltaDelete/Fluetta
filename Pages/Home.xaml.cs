@@ -3,9 +3,11 @@ using CmlLib.Core.Auth;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,6 +45,8 @@ namespace Fluetta.Pages
                 selectedProfile.LastUsed = DateTime.Now;
                 File.WriteAllText($"{instance_path}\\instance_settings.json", JsonConvert.SerializeObject(selectedProfile));
                 var launcher = new CMLauncher(FMinecraftPath.GetPath(SettingsData.minecraftPath, $"{SettingsData.minecraftPath}\\instances\\{selectedProfile.InstanceDir}"));
+                launcher.FileChanged += Launcher_FileChanged;
+                launcher.ProgressChanged += Launcher_ProgressChanged;
                 var launchOption = new MLaunchOption
                 {
                     MaximumRamMb = (!string.IsNullOrEmpty(selectedProfile.MaxRAM)) ? int.Parse(selectedProfile.MaxRAM) : int.Parse(SettingsData.maxRAM),
@@ -56,6 +60,7 @@ namespace Fluetta.Pages
 
                 process.Start();
                 ProgressBar.Visibility = Visibility.Hidden;
+                ProgressBar.IsIndeterminate = true;
                 PlayBtn.IsEnabled = true;
                 PlayBtn.Content = Properties.Resources.PlayBtn;
             }
@@ -98,6 +103,22 @@ namespace Fluetta.Pages
         {
             File.WriteAllText(@"selected_profile.txt", ComboBox.SelectedItem.ToString());
             System.Diagnostics.Debug.WriteLine("[!] Profile selected");
+        }
+        // Event Handler. Show download progress
+        private void Launcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[!] Download progress - {e}");
+            ProgressBar.IsIndeterminate = false;
+            ProgressBar.Maximum = 100;
+            ProgressBar.Value = e.ProgressPercentage;
+        }
+
+        private void Launcher_FileChanged(CmlLib.Core.Downloader.DownloadFileChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[!] File changed progress - {e}");
+            ProgressBar.IsIndeterminate = false;
+            ProgressBar.Maximum = e.TotalFileCount;
+            ProgressBar.Value = e.ProgressedFileCount;
         }
     }
 }
