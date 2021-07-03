@@ -295,11 +295,11 @@ namespace Fluetta.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на MIT License.
+        ///   Ищет локализованную строку, похожую на Apache 2.0 License.
         /// </summary>
-        public static string LicenseMIT {
+        public static string LicenseApache {
             get {
-                return ResourceManager.GetString("LicenseMIT", resourceCulture);
+                return ResourceManager.GetString("LicenseApache", resourceCulture);
             }
         }
         

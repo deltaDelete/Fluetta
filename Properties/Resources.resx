@@ -195,8 +195,8 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="LicenseMIT" xml:space="preserve">
-    <value>MIT License</value>
+  <data name="LicenseApache" xml:space="preserve">
+    <value>Apache 2.0 License</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Light</value>

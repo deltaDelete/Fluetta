@@ -152,6 +152,7 @@ namespace Fluetta.Pages
             JavaPath.Text = SettingsData.javaPath;
             JVMArgs.Text = SettingsData.jvmArgs;
             MAXRAM.Text = SettingsData.maxRAM;
+            Version.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void ResetResolution(object sender, RoutedEventArgs e)

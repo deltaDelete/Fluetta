@@ -8,7 +8,16 @@
     <ApplicationIcon>FluettaLogoCircle.ico</ApplicationIcon>
     <SignAssembly>false</SignAssembly>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <StartupObject>Fluetta.App</StartupObject>
+    <Version>1.0.1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Images\**" />
+    <EmbeddedResource Remove="Images\**" />
+    <None Remove="Images\**" />
+    <Page Remove="Images\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Fonts\segmdl2.ttf" />
@@ -81,10 +90,6 @@
     </Resource>
     <Resource Include="Pages\AccountPages\mojang_studios.ico" />
     <Resource Include="Pages\background.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Images\" />
   </ItemGroup>
 
   <ItemGroup>
