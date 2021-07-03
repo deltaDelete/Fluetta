@@ -1,37 +1,28 @@
-## Welcome to GitHub Pages
+## Fluetta
 
-You can use the [editor on GitHub](https://github.com/deltaDelete/Fluetta/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Fluetta is a minecraft launcher with instance management made with ModernWPF.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+![HomePage](https://i.imgur.com/OEMsvjw.png)
+### Instances
 
-### Markdown
+Fluetta has custom management system for instances.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+![InstancePage](https://i.imgur.com/A2SxHtu.png)
 
-```markdown
-Syntax highlighted code block
+### Accounts
 
-# Header 1
-## Header 2
-### Header 3
+You can login with your Minecraft Premium or use username for Cracked play.
 
-- Bulleted
-- List
+![AuthWindow](https://i.imgur.com/yDXH4mF.png)
 
-1. Numbered
-2. List
+### Support
 
-**Bold** and _Italic_ and `Code` text
+All errors and other questions should go to Github Issues page of repository.
 
-[Link](url) and ![Image](src)
-```
+### Donation
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+You can support me with money:
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/deltaDelete/Fluetta/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+- YOOMoney - 41001895094990
+- QIWI Nickname - DELTADELETE 
+- WebMoney Z721067333817 P449309093906
