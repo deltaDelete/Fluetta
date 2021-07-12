@@ -87,8 +87,15 @@ namespace Fluetta.Pages
             ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(SettingsData.minecraftPath));
             if (!File.Exists(@"selected_profile.txt"))
             {
-                ComboBox.SelectedItem = ComboBox.Items.GetItemAt(0);
-                System.Diagnostics.Debug.WriteLine("[!] No selected_profile.txt found, first item");
+                ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(SettingsData.minecraftPath));
+                try
+                {
+                    ComboBox.SelectedItem = "latestRelease";
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("[!] No selected_profile.txt found, first item");
+                }
             }
             else
             {

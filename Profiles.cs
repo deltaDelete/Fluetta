@@ -46,17 +46,25 @@ namespace Fluetta
             else
             {
                 System.Diagnostics.Debug.WriteLine($"[!] Folder instances not found");
+                Directory.CreateDirectory($"{path}\\instances");
                 return null;
             }
         }
         public static List<string> GetInstanceNames(List<string> list)
         {
             List<string> returnList = new List<string>();
-            foreach (string str in list)
+            if (list == null)
             {
-                returnList.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{str}\\instance_settings.json")).Name);
+                return null;
             }
-            return returnList;
+            else
+            {
+                foreach (string str in list)
+                {
+                    returnList.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{str}\\instance_settings.json")).Name);
+                }
+                return returnList;
+            }
         }
         public static string GetFolderByName(string name, List<string> directories)
         {

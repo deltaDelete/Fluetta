@@ -5,12 +5,15 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
 using static Fluetta.Pages.Settings;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fluetta
 {
     public partial class MainWindow
     {
-        public static List<string> versionIds = new List<string>();
+        public static List<string> versionIds;
+        public static CmlLib.Core.Version.MVersionCollection versions;
         public static string latestRelease;
         public MainWindow()
         {
@@ -22,29 +25,64 @@ namespace Fluetta
             //File.WriteAllText(@".\dasd.json", JsonConvert.SerializeObject(new Instances.Instance()));
             if (File.Exists(@".\launcher_settings.json"))
             {
-                Settings.SettingsData.SetFromObject(JsonConvert.DeserializeObject<Settings.SettingsData.SettingsDataObject>(File.ReadAllText(@".\launcher_settings.json")));
+                SettingsData.SetFromObject(JsonConvert.DeserializeObject<SettingsData.SettingsDataObject>(File.ReadAllText(@".\launcher_settings.json")));
             } else
             {
-                Settings.SettingsData.SettingsDataObject settings = Settings.SettingsData.ToObject();
+                SettingsData.SettingsDataObject settings = SettingsData.ToObject();
                 File.WriteAllText(@".\launcher_settings.json", JsonConvert.SerializeObject(settings));
-                Settings.SettingsData.SetFromObject(settings);
+                SettingsData.SetFromObject(settings);
             }
-            if (!File.Exists(Settings.SettingsData.minecraftPath + "\\launcher_profiles.json"))
+            if (!Directory.Exists(SettingsData.minecraftPath))
             {
-                File.WriteAllText(Settings.SettingsData.minecraftPath + "\\launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
+                Directory.CreateDirectory(SettingsData.minecraftPath);
             }
-            LoadVersions();
-            Instances.InstanceList = Instances.ListDirs(Settings.SettingsData.minecraftPath);
+            if (!File.Exists(SettingsData.minecraftPath + "\\launcher_profiles.json"))
+            {
+                File.WriteAllText(SettingsData.minecraftPath + "\\launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
+            }
+            Instances.InstanceList = Instances.ListDirs(SettingsData.minecraftPath);
+            if (File.Exists($"{SettingsData.minecraftPath}\\instances\\instance_settings.json"))
+            {
+                File.Delete($"{SettingsData.minecraftPath}\\instances\\instance_settings.json");
+            }
+            versionIds = Versions.VersionIds();
+            latestRelease = Versions.LatestRelease();
+            if (!Directory.Exists($"{SettingsData.minecraftPath}\\instances\\latestRelease"))
+            {
+                Fluetta.Instances.Instance instance = new Fluetta.Instances.Instance
+                {
+                    Name = "latestRelease",
+                    VersionId = latestRelease,
+                    Created = System.DateTime.Now,
+                    LastUsed = System.DateTime.Now,
+                    InstanceDir = "latestRelease",
+                    JavaDir = null,
+                    ResX = SettingsData.resX,
+                    ResY = SettingsData.resY,
+                    JVMArgs = null,
+                    MaxRAM = SettingsData.maxRAM
+                };
+                System.Diagnostics.Debug.WriteLine("[!] Latest release chosen");
+                Directory.CreateDirectory($"{SettingsData.minecraftPath}\\instances\\latestRelease");
+                File.WriteAllText($"{SettingsData.minecraftPath}\\instances\\latestRelease\\instance_settings.json", JsonConvert.SerializeObject(instance));
+            }
             InitializeComponent();
         }
-        public async static void LoadVersions()
+        public class Versions
         {
-            CmlLib.Core.Version.MVersionCollection versions = await new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersionsAsync();
-            foreach (CmlLib.Core.Version.MVersionMetadata versionMetadata in versions)
-            {
-                versionIds.Add(versionMetadata.Name);
+            public static List<string> VersionIds() {
+                List<string> versionIds = new List<string>();
+                MainWindow.versions = new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersions();
+                foreach (CmlLib.Core.Version.MVersionMetadata versionMetadata in versions)
+                {
+                    versionIds.Add(versionMetadata.Name);
+                }
+                return versionIds;
             }
-            latestRelease = versions.LatestReleaseVersion.Name;
+            public static string LatestRelease()
+            {
+                return MainWindow.versions.LatestReleaseVersion.Name;
+            }
         }
 
 
