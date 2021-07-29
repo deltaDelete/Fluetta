@@ -6,7 +6,6 @@
                   xmlns:local="clr-namespace:Fluetta.Pages"
                   xmlns:ui="http://schemas.modernwpf.com/2019"
                   xmlns:res="clr-namespace:Fluetta.Properties"
-                  x:Name="Dialog"
                   Title="{x:Static res:Resources.Edit}"
                   PrimaryButtonText="{x:Static res:Resources.Save}"
                   PrimaryButtonStyle="{DynamicResource AccentButtonStyle}"
@@ -29,7 +28,7 @@
                 <Button Content="{x:Static res:Resources.Reset}" VerticalAlignment="Bottom" Height="32" Click="ResResetClick" MinWidth="89"/>
             </ui:SimpleStackPanel>
             <TextBox ui:ControlHelper.Header="{x:Static res:Resources.JVMArgs}" x:Name="JVMArgs"/>
-            <TextBox ui:ControlHelper.Header="{x:Static res:Resources.MaxRAM}" x:Name="MaxRAM"/>
+            <ui:NumberBox ui:ControlHelper.Header="{x:Static res:Resources.MaxRAM}" x:Name="MaxRAM" SpinButtonPlacementMode="Compact" Minimum="256"/>
         </ui:SimpleStackPanel>
     </ScrollViewer>
 </ui:ContentDialog>

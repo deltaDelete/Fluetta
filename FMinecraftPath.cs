@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CmlLib.Core;
+﻿using CmlLib.Core;
 
 namespace Fluetta
 {

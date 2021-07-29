@@ -5,14 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Fluetta.Pages.AccountPages"
       xmlns:ui="http://schemas.modernwpf.com/2019"
-      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      
       xmlns:res="clr-namespace:Fluetta.Properties"
       mc:Ignorable="d" 
       d:DesignHeight="312" d:DesignWidth="225" d:Background="White"
       Loaded="Page_Loaded"
       Title="MojangLogin">
 
-    <Grid fw:PointerTracker.Enabled="True">
+    <Grid>
         <ui:SimpleStackPanel Spacing="20" Margin="{StaticResource ControlPageContentMargin}">
             <Image Source="mojang_studios.ico"/>
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.SignIn}"/>

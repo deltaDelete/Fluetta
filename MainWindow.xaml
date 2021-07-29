@@ -6,16 +6,15 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
-        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        
         xmlns:res="clr-namespace:Fluetta.Properties"
         WindowStartupLocation="CenterScreen"
         Title="Fluetta" 
         Height="450" 
         MinHeight="450"
         Width="800"
-        MinWidth="800"
-        fw:AcrylicWindow.TitleBarMode="Extend">
-    <Grid fw:PointerTracker.Enabled="True">
+        MinWidth="800">
+    <Grid>
         <ui:NavigationView
             x:Name="NavigationView"
             IsBackButtonVisible="Collapsed" 

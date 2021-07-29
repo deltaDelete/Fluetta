@@ -1,12 +1,9 @@
 ﻿using Fluetta.Pages;
 using System.Windows;
-using System.Windows.Controls;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
 using static Fluetta.Pages.Settings;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Fluetta
 {
@@ -72,7 +69,15 @@ namespace Fluetta
         {
             public static List<string> VersionIds() {
                 List<string> versionIds = new List<string>();
-                MainWindow.versions = new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersions();
+                try
+                {
+                    MainWindow.versions = new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersions();
+                }
+                catch
+                {
+                    MessageBox.Show("No internet connection available, launcher won't work");
+                    MainWindow.versions = new CmlLib.Core.VersionLoader.LocalVersionLoader(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetVersionMetadatas();
+                }
                 foreach (CmlLib.Core.Version.MVersionMetadata versionMetadata in versions)
                 {
                     versionIds.Add(versionMetadata.Name);
@@ -81,7 +86,14 @@ namespace Fluetta
             }
             public static string LatestRelease()
             {
-                return MainWindow.versions.LatestReleaseVersion.Name;
+                try
+                {
+                    return MainWindow.versions.LatestReleaseVersion.Name;
+                }
+                catch
+                {
+                    return "";
+                }
             }
         }
 

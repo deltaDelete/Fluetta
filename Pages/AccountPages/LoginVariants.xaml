@@ -4,14 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Fluetta.Pages.AccountPages"
-      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      
       xmlns:ui="http://schemas.modernwpf.com/2019"
       xmlns:res="clr-namespace:Fluetta.Properties"
       mc:Ignorable="d" 
       d:DesignHeight="312" d:DesignWidth="225" d:Background="White"
       Title="LoginVariants">
 
-    <Grid fw:PointerTracker.Enabled="True">
+    <Grid>
         <ui:SimpleStackPanel Margin="{StaticResource ControlPageContentMargin}" Spacing="24">
             <TextBlock Text="{x:Static res:Resources.Login}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <ui:SimpleStackPanel Spacing="10">

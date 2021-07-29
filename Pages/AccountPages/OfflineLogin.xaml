@@ -4,14 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Fluetta.Pages.AccountPages"
-      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      
       xmlns:ui="http://schemas.modernwpf.com/2019"
       xmlns:res="clr-namespace:Fluetta.Properties"
       mc:Ignorable="d" 
       d:DesignHeight="312" d:DesignWidth="225" d:Background="White"
       Title="OfflineLogin">
 
-    <Grid fw:PointerTracker.Enabled="True">
+    <Grid>
         <ui:SimpleStackPanel Spacing="20" Margin="{StaticResource ControlPageContentMargin}">
             <TextBlock Text="{x:Static res:Resources.Offline}" Style="{DynamicResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
             <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.SignIn}"/>
