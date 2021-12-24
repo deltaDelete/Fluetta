@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static Fluetta.Auth;
 using Newtonsoft.Json;
 using ModernWpf.Media.Animation;
+using CmlLib.Core.Auth.Microsoft.UI.Wpf;
 
 namespace Fluetta.Pages.AccountPages
 {
@@ -22,6 +13,8 @@ namespace Fluetta.Pages.AccountPages
     /// </summary>
     public partial class CurrentMethod : Page
     {
+        private SessionData SessionData;
+        private readonly SlideNavigationTransitionInfo _transitionInfo = new() { Effect = SlideNavigationTransitionEffect.FromRight };
         public CurrentMethod()
         {
             InitializeComponent();
@@ -29,23 +22,34 @@ namespace Fluetta.Pages.AccountPages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            SessionData SessionData = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(@".\login_settings.json"));
-            if (!SessionData.OnlineMode)
-            {
-                System.Diagnostics.Debug.WriteLine("[!] Current login method is Offline");
-                LoginMethod.Text = Properties.Resources.Offline;
-                Username.Text = SessionData.Session.Username;
-            } else if (SessionData.OnlineMode)
+            SessionData = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(@$".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}login.json"));
+            if (SessionData.OnlineMode && !SessionData.IsMicrosoft)
             {
                 System.Diagnostics.Debug.WriteLine("[!] Current login method is Mojang");
                 LoginMethod.Text = Properties.Resources.Mojang;
+                Username.Text = SessionData.Session.Username;
+            }
+            else if (SessionData.OnlineMode && SessionData.IsMicrosoft)
+            {
+                System.Diagnostics.Debug.WriteLine("[!] Current login method is Microsoft");
+                LoginMethod.Text = Properties.Resources.MicrosoftLogin;
+                Username.Text = SessionData.Session.Username;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("[!] Current login method is Offline");
+                LoginMethod.Text = Properties.Resources.Offline;
                 Username.Text = SessionData.Session.Username;
             }
         }
 
         private void ChangeLoginMethod(object sender, RoutedEventArgs e)
         {
-            SlideNavigationTransitionInfo _transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+            if (SessionData.IsMicrosoft && SessionData.OnlineMode)
+            {
+                MicrosoftLoginWindow loginForm = new();
+                loginForm.ShowLogoutDialog();
+            }
             ((Account)Window.GetWindow(this)).ContentFrame.Navigate(typeof(LoginVariants), null, _transitionInfo);
         }
     }

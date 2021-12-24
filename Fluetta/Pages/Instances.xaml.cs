@@ -15,6 +15,7 @@ namespace Fluetta.Pages
     /// </summary>
     public partial class Instances : Page
     {
+        public static ObservableCollection<Instance> Items { get; set; }
         public Instances()
         {
             InitializeComponent();
@@ -22,14 +23,13 @@ namespace Fluetta.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //ListView.ItemsSource = GetInstanceNames(ListDirs(SettingsData.minecraftPath));
             SetItemsSource(InstanceGrid);
         }
 
         private async void DeleteClick(object sender, RoutedEventArgs e)
         {
             Instance sndr = (Instance)((Button)sender).DataContext;
-            ModernWpf.Controls.ContentDialog contentDialog = new ModernWpf.Controls.ContentDialog()
+            ModernWpf.Controls.ContentDialog contentDialog = new()
             {
                 PrimaryButtonText = Properties.Resources.Yes,
                 SecondaryButtonText = Properties.Resources.No,
@@ -39,21 +39,20 @@ namespace Fluetta.Pages
             ModernWpf.Controls.ContentDialogResult result = await contentDialog.ShowAsync();
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
             {
-                Directory.Delete($"{SettingsData.minecraftPath}\\instances\\{sndr.InstanceDir}", true);
+                Directory.Delete($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}", true);
                 SetItemsSource(InstanceGrid);
                 System.Diagnostics.Debug.WriteLine($"[!] {sndr.Name} is successfully deleted");
             }
         }
         public static void SetItemsSource(ModernWpf.Controls.GridView gridView)
         {
-            List<Instance> tempList = GetInstanceObjects(SettingsData.minecraftPath);
-            ObservableCollection<Instance> Items = new ObservableCollection<Instance>(tempList);
+            Items = GetInstanceObjects(SettingsData.minecraftPath);
             gridView.ItemsSource = Items;
         }
         private async void EditClick(object sender, RoutedEventArgs e)
         {
             Instance sndr = (Instance)((Button)sender).DataContext;
-            EditDialog editDialog = new EditDialog();
+            EditDialog editDialog = new();
             editDialog.Name.Text = sndr.Name;
             editDialog.Version.ItemsSource = MainWindow.versionIds; //new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersions();
             editDialog.Version.SelectedItem = sndr.VersionId;
@@ -67,7 +66,7 @@ namespace Fluetta.Pages
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
             {
                 System.Diagnostics.Debug.WriteLine("[!] Primary button pressed");
-                File.WriteAllText($"{SettingsData.minecraftPath}\\instances\\{sndr.InstanceDir}\\instance_settings.json", JsonConvert.SerializeObject(new Instance()
+                await File.WriteAllTextAsync($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(new Instance()
                 {
                     Name = editDialog.Name.Text,
                     VersionId = editDialog.Version.Text,
@@ -83,16 +82,18 @@ namespace Fluetta.Pages
                 ));
                 if (editDialog.FolderName.Text != sndr.InstanceDir)
                 {
-                    Directory.Move($"{SettingsData.minecraftPath}\\instances\\{sndr.InstanceDir}", $"{SettingsData.minecraftPath}\\instances\\{editDialog.FolderName.Text}");
+                    Directory.Move($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}", $"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{editDialog.FolderName.Text}");
                 }
                 SetItemsSource(InstanceGrid);
             }
         }
         private async void NewInstanceClick(object sender, RoutedEventArgs e)
         {
-            EditDialog createDialog = new EditDialog();
-            createDialog.Title = Properties.Resources.CreateInstance;
-            createDialog.PrimaryButtonText = Properties.Resources.Create;
+            EditDialog createDialog = new()
+            {
+                Title = Properties.Resources.CreateInstance,
+                PrimaryButtonText = Properties.Resources.Create
+            };
             createDialog.Version.ItemsSource = MainWindow.versionIds;
             createDialog.Version.SelectedItem = MainWindow.latestRelease;
             ModernWpf.Controls.ContentDialogResult result = await createDialog.ShowAsync();
@@ -104,16 +105,18 @@ namespace Fluetta.Pages
                 }
                 if (string.IsNullOrEmpty(createDialog.Name.Text))
                 {
-                    ModernWpf.Controls.ContentDialog warningDialog = new ModernWpf.Controls.ContentDialog();
-                    warningDialog.Title = Properties.Resources.Attention;
-                    warningDialog.Content = Properties.Resources.NameIsEmpty;
-                    warningDialog.PrimaryButtonText = Properties.Resources.Ok;
+                    ModernWpf.Controls.ContentDialog warningDialog = new()
+                    {
+                        Title = Properties.Resources.Attention,
+                        Content = Properties.Resources.NameIsEmpty,
+                        PrimaryButtonText = Properties.Resources.Ok
+                    };
                     await warningDialog.ShowAsync();
                     createDialog.Closing -= null;
                 }
                 else
                 {
-                    Instance instance = new Instance
+                    Instance instance = new()
                     {
                         Name = createDialog.Name.Text,
                         VersionId = createDialog.Version.Text,
@@ -126,8 +129,8 @@ namespace Fluetta.Pages
                         JVMArgs = createDialog.JVMArgs.Text,
                         MaxRAM = createDialog.MaxRAM.Text
                     };
-                    Directory.CreateDirectory($"{SettingsData.minecraftPath}\\instances\\{instance.InstanceDir}");
-                    File.WriteAllText($"{SettingsData.minecraftPath}\\instances\\{instance.InstanceDir}\\instance_settings.json", JsonConvert.SerializeObject(instance));
+                    Directory.CreateDirectory($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{instance.InstanceDir}");
+                    await File.WriteAllTextAsync($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{instance.InstanceDir}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(instance));
                     SetItemsSource(InstanceGrid);
                 }
             }

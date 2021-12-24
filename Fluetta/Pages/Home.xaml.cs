@@ -22,22 +22,22 @@ namespace Fluetta.Pages
 
         private async void PlayClick(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(@".\login_settings.json"))
+            if (File.Exists($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}login.json"))
             {
                 ProgressBar.Visibility = Visibility.Visible;
                 PlayBtn.IsEnabled = false;
                 PlayBtn.Content = null;
                 string instance_path = $"{Fluetta.Instances.GetFolderByName(ComboBox.SelectedItem.ToString(), Fluetta.Instances.ListDirs(SettingsData.minecraftPath))}";
-                Fluetta.Instances.Instance selectedProfile = JsonConvert.DeserializeObject<Fluetta.Instances.Instance>(File.ReadAllText($"{instance_path}\\instance_settings.json"));
+                Fluetta.Instances.Instance selectedProfile = JsonConvert.DeserializeObject<Fluetta.Instances.Instance>(File.ReadAllText($"{instance_path}{Path.DirectorySeparatorChar}instance_settings.json"));
                 selectedProfile.LastUsed = DateTime.Now;
-                File.WriteAllText($"{instance_path}\\instance_settings.json", JsonConvert.SerializeObject(selectedProfile));
-                var launcher = new CMLauncher(FMinecraftPath.GetPath(SettingsData.minecraftPath, $"{SettingsData.minecraftPath}\\instances\\{selectedProfile.InstanceDir}"));
+                File.WriteAllText($"{instance_path}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(selectedProfile));
+                var launcher = new CMLauncher(FMinecraftPath.GetPath(SettingsData.minecraftPath, $"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{selectedProfile.InstanceDir}"));
                 launcher.FileChanged += Launcher_FileChanged;
                 launcher.ProgressChanged += Launcher_ProgressChanged;
                 var launchOption = new MLaunchOption
                 {
                     MaximumRamMb = (!string.IsNullOrEmpty(selectedProfile.MaxRAM)) ? int.Parse(selectedProfile.MaxRAM) : int.Parse(SettingsData.maxRAM),
-                    Session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(@".\login_settings.json")).Session,
+                    Session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}login.json")).Session,
                     ScreenWidth = (!string.IsNullOrEmpty(selectedProfile.ResX)) ? int.Parse(selectedProfile.ResX) : int.Parse(SettingsData.resX),
                     ScreenHeight = (!string.IsNullOrEmpty(selectedProfile.ResY)) ? int.Parse(selectedProfile.ResY) : int.Parse(SettingsData.resY),
                 };
@@ -72,7 +72,7 @@ namespace Fluetta.Pages
             ComboBox.ItemsSource = vervar;
             */
             ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(SettingsData.minecraftPath));
-            if (!File.Exists(@"selected_profile.txt"))
+            if (!File.Exists($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}selected_profile.txt"))
             {
                 ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(SettingsData.minecraftPath));
                 try
@@ -86,7 +86,7 @@ namespace Fluetta.Pages
             }
             else
             {
-                ComboBox.SelectedItem = File.ReadAllText(@"selected_profile.txt");
+                ComboBox.SelectedItem = File.ReadAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}selected_profile.txt");
             }
             ProgressBar.Visibility = Visibility.Hidden;
             PlayBtn.IsEnabled = true;
@@ -95,7 +95,7 @@ namespace Fluetta.Pages
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            File.WriteAllText(@"selected_profile.txt", ComboBox.SelectedItem.ToString());
+            File.WriteAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}selected_profile.txt", ComboBox.SelectedItem.ToString());
             System.Diagnostics.Debug.WriteLine("[!] Profile selected");
         }
         // Event Handler. Show download progress

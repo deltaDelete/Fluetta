@@ -38,7 +38,7 @@ namespace Fluetta.Pages
             SettingsData.jvmArgs = JVMArgs.Text;
             if (onLoadIndex != changedIndex) 
             {
-                ModernWpf.Controls.ContentDialog contentDialog = new ModernWpf.Controls.ContentDialog()
+                ModernWpf.Controls.ContentDialog contentDialog = new()
                 {
                     PrimaryButtonText = Properties.Resources.Ok,
                     Title = Properties.Resources.Attention,
@@ -46,7 +46,7 @@ namespace Fluetta.Pages
                 };
                 await contentDialog.ShowAsync(); 
             }
-            File.WriteAllText(@".\launcher_settings.json", JsonConvert.SerializeObject(SettingsData.ToObject()));
+            File.WriteAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json", JsonConvert.SerializeObject(SettingsData.ToObject()));
             System.Diagnostics.Debug.WriteLine("[!] Apply pressed");
         }
         public string GetTheme()
@@ -69,8 +69,8 @@ namespace Fluetta.Pages
         {
             public static string accent = "#FF0078D7";
             public static string theme = "systemdefault";
-            public static string language = "en-US";
-            public static string minecraftPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.fluetta";
+            public static string language = System.Globalization.CultureInfo.CurrentUICulture.Name;
+            public static string minecraftPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + $"{Path.DirectorySeparatorChar}.fluetta";
             public static string resX = "856";
             public static string resY = "482";
             public static string javaPath = "default";
@@ -91,7 +91,7 @@ namespace Fluetta.Pages
 
             public static SettingsDataObject ToObject()
             {
-                SettingsDataObject settings = new SettingsDataObject()
+                SettingsDataObject settings = new()
                 {
                     ThemeData = theme,
                     AccentData = accent,
@@ -136,9 +136,9 @@ namespace Fluetta.Pages
 
         private void BrowseClick(object sender, RoutedEventArgs e)
         {
-            Ookii.Dialogs.Wpf.VistaFolderBrowserDialog folderDialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog
+            Ookii.Dialogs.Wpf.VistaFolderBrowserDialog folderDialog = new()
             {
-                SelectedPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.fluetta"
+                SelectedPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + $"{Path.DirectorySeparatorChar}.fluetta"
             };
             folderDialog.ShowDialog();
             PathBox.Text = folderDialog.SelectedPath;
@@ -162,7 +162,7 @@ namespace Fluetta.Pages
         }
         private void ResetPath(object sender, RoutedEventArgs e)
         {
-            PathBox.Text = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.fluetta";
+            PathBox.Text = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + $"{Path.DirectorySeparatorChar}.fluetta";
         }
         private void ResetJavaPath(object sender, RoutedEventArgs e)
         {
@@ -170,7 +170,7 @@ namespace Fluetta.Pages
         }
         private void BrowseJavaClick(object sender, RoutedEventArgs e)
         {
-            Ookii.Dialogs.Wpf.VistaOpenFileDialog fileDialog = new Ookii.Dialogs.Wpf.VistaOpenFileDialog
+            Ookii.Dialogs.Wpf.VistaOpenFileDialog fileDialog = new()
             {
                 DefaultExt = "exe"
             };

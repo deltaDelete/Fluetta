@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace Fluetta
 {
@@ -24,12 +25,12 @@ namespace Fluetta
         public static List<string> ListDirs(string path)
         {
             List<string> instanceList = new List<string>();
-            if (Directory.Exists(path + ".\\instances"))
+            if (Directory.Exists(path + $".{Path.DirectorySeparatorChar}instances"))
             {
-                string[] instances = Directory.GetDirectories($"{path}\\instances");
+                string[] instances = Directory.GetDirectories($"{path}{Path.DirectorySeparatorChar}instances");
                 foreach (string instance in instances)
                 {
-                    if (File.Exists($"{instance}\\instance_settings.json"))
+                    if (File.Exists($"{instance}{Path.DirectorySeparatorChar}instance_settings.json"))
                     {
                         System.Diagnostics.Debug.WriteLine($"[!] Folder {instance} added to List");
                         instanceList.Add(instance);
@@ -44,7 +45,7 @@ namespace Fluetta
             else
             {
                 System.Diagnostics.Debug.WriteLine($"[!] Folder instances not found");
-                Directory.CreateDirectory($"{path}\\instances");
+                Directory.CreateDirectory($"{path}{Path.DirectorySeparatorChar}instances");
                 return null;
             }
         }
@@ -59,7 +60,7 @@ namespace Fluetta
             {
                 foreach (string str in list)
                 {
-                    returnList.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{str}\\instance_settings.json")).Name);
+                    returnList.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{str}{Path.DirectorySeparatorChar}instance_settings.json")).Name);
                 }
                 return returnList;
             }
@@ -69,7 +70,7 @@ namespace Fluetta
             string path = null;
             foreach (string str in directories)
             {
-                if (JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{str}\\instance_settings.json")).Name == name)
+                if (JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{str}{Path.DirectorySeparatorChar}instance_settings.json")).Name == name)
                 {
                     path = str;
                 }
@@ -77,28 +78,28 @@ namespace Fluetta
             return path;
         }
 
-        public static List<Instance> GetInstanceObjects(string path)
+        public static ObservableCollection<Instance> GetInstanceObjects(string path)
         {
-            List<Instance> objects = new List<Instance>();
+            ObservableCollection<Instance> objects = new ObservableCollection<Instance>();
             foreach (string instancePath in ListDirs(path))
             {
                 /*
                 objects.Add(new Instance()
                 {
-                    Name = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).Name,
-                    VersionId = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).VersionId,
-                    Created = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).Created,
-                    LastUsed = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).LastUsed,
-                    InstanceDir = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).InstanceDir,
-                    JavaDir = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).JavaDir,
-                    ResX = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).ResX,
-                    ResY = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).ResY,
-                    JVMArgs = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).JVMArgs,
-                    MaxRAM = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")).MaxRAM
+                    Name = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).Name,
+                    VersionId = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).VersionId,
+                    Created = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).Created,
+                    LastUsed = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).LastUsed,
+                    InstanceDir = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).InstanceDir,
+                    JavaDir = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).JavaDir,
+                    ResX = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).ResX,
+                    ResY = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).ResY,
+                    JVMArgs = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).JVMArgs,
+                    MaxRAM = JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")).MaxRAM
                 }
                 );
                 */
-                objects.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}\\instance_settings.json")));
+                objects.Add(JsonConvert.DeserializeObject<Instance>(File.ReadAllText($"{instancePath}{Path.DirectorySeparatorChar}instance_settings.json")));
             }
             return objects;
         }

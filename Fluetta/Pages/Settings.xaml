@@ -95,7 +95,7 @@
                             <Run Text="Fluetta ("/>
                             <ui:HyperlinkButton FontSize="20px" Margin="-5 -12" VerticalAlignment="Bottom" Content="https://github.com/deltaDelete/Fluetta"/><Run Text=" )"/>
                             <LineBreak/>
-                            <Run Text="{x:Static res:Resources.Version}"/><Run x:Name="Version" Text="1.0.0"/>
+                            <Run Text="{x:Static res:Resources.Version}"/><Run x:Name="Version"/>
                             <LineBreak/>
                             <Run Text="© deltaDelete ("/>
                             <ui:HyperlinkButton FontSize="20px" Margin="-5 -12" VerticalAlignment="Bottom" Content="https://github.com/deltaDelete"/>

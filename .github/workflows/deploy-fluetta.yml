@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.x
+          dotnet-version: 6.x
 
       - run: dotnet restore ${{ env.PROJECT_PATH }}
 
@@ -33,6 +33,6 @@ jobs:
       - uses: csexton/release-asset-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: bin/Release/netcoreapp3.1/win-x64/publish/*.exe
+          pattern: bin/publish/*.exe
           release-url: ${{ steps.create_release.outputs.upload_url }}
       

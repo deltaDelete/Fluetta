@@ -4,47 +4,47 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
 using static Fluetta.Pages.Settings;
+using System.Collections.ObjectModel;
 
 namespace Fluetta
 {
     public partial class MainWindow
     {
-        public static List<string> versionIds;
+        public static ObservableCollection<string> versionIds;
         public static CmlLib.Core.Version.MVersionCollection versions;
         public static string latestRelease;
         public MainWindow()
         {
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented
             };
-            //File.WriteAllText(@".\dasd.json", JsonConvert.SerializeObject(new Instances.Instance()));
-            if (File.Exists(@".\launcher_settings.json"))
+            Directory.CreateDirectory($".{Path.DirectorySeparatorChar}settings");
+            if (File.Exists($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json"))
             {
-                SettingsData.SetFromObject(JsonConvert.DeserializeObject<SettingsData.SettingsDataObject>(File.ReadAllText(@".\launcher_settings.json")));
+                SettingsData.SetFromObject(JsonConvert.DeserializeObject<SettingsData.SettingsDataObject>(File.ReadAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json")));
             } else
             {
                 SettingsData.SettingsDataObject settings = SettingsData.ToObject();
-                File.WriteAllText(@".\launcher_settings.json", JsonConvert.SerializeObject(settings));
+                File.WriteAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json", JsonConvert.SerializeObject(settings));
                 SettingsData.SetFromObject(settings);
             }
             if (!Directory.Exists(SettingsData.minecraftPath))
             {
                 Directory.CreateDirectory(SettingsData.minecraftPath);
             }
-            if (!File.Exists(SettingsData.minecraftPath + "\\launcher_profiles.json"))
+            if (!File.Exists(SettingsData.minecraftPath + Path.DirectorySeparatorChar + "launcher_profiles.json"))
             {
-                File.WriteAllText(SettingsData.minecraftPath + "\\launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
+                File.WriteAllText(SettingsData.minecraftPath + Path.DirectorySeparatorChar + "launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
             }
             Instances.InstanceList = Instances.ListDirs(SettingsData.minecraftPath);
-            if (File.Exists($"{SettingsData.minecraftPath}\\instances\\instance_settings.json"))
+            if (File.Exists($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}instance_settings.json"))
             {
-                File.Delete($"{SettingsData.minecraftPath}\\instances\\instance_settings.json");
+                File.Delete($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}instance_settings.json");
             }
             versionIds = Versions.VersionIds();
             latestRelease = Versions.LatestRelease();
-            if (!Directory.Exists($"{SettingsData.minecraftPath}\\instances\\latestRelease"))
+            if (!Directory.Exists($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease"))
             {
                 Fluetta.Instances.Instance instance = new Fluetta.Instances.Instance
                 {
@@ -60,15 +60,16 @@ namespace Fluetta
                     MaxRAM = SettingsData.maxRAM
                 };
                 System.Diagnostics.Debug.WriteLine("[!] Latest release chosen");
-                Directory.CreateDirectory($"{SettingsData.minecraftPath}\\instances\\latestRelease");
-                File.WriteAllText($"{SettingsData.minecraftPath}\\instances\\latestRelease\\instance_settings.json", JsonConvert.SerializeObject(instance));
+                Directory.CreateDirectory($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease");
+                File.WriteAllText($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(instance));
             }
             InitializeComponent();
+
         }
         public class Versions
         {
-            public static List<string> VersionIds() {
-                List<string> versionIds = new List<string>();
+            public static ObservableCollection<string> VersionIds() {
+                ObservableCollection<string> versionIds = new ObservableCollection<string>();
                 try
                 {
                     MainWindow.versions = new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersions();

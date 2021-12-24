@@ -16,6 +16,7 @@
             <TextBlock Text="{x:Static res:Resources.Login}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <ui:SimpleStackPanel Spacing="10">
                 <Button x:Name="MojangLogin" Click="MojangLogin_Click" Style="{StaticResource DefaultButtonStyle}" MinWidth="162" HorizontalAlignment="Center" FontSize="16" Height="38" Content="{x:Static res:Resources.MojangLogin}"/>
+                <Button x:Name="MicrosoftLogin" Click="MicrosoftLogin_Click" Style="{StaticResource DefaultButtonStyle}" MinWidth="162" HorizontalAlignment="Center" FontSize="16" Height="38" Content="{x:Static res:Resources.MicrosoftLogin}"/>
                 <Button x:Name="OfflineLogin" Click="OfflineLogin_Click" Style="{StaticResource DefaultButtonStyle}" MinWidth="162" HorizontalAlignment="Center" FontSize="16" Padding="2" Height="38" Content="{x:Static res:Resources.OfflineLogin}"/>
             </ui:SimpleStackPanel>
         </ui:SimpleStackPanel>

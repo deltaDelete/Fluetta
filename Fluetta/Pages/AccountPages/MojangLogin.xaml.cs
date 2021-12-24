@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CmlLib.Core.Auth;
 using ModernWpf.Media.Animation;
 
@@ -23,7 +12,7 @@ namespace Fluetta.Pages.AccountPages
     public partial class MojangLogin : Page
     {
         public static MLoginResponse response;
-        private readonly SlideNavigationTransitionInfo _transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+        private readonly SlideNavigationTransitionInfo _transitionInfo = new() { Effect = SlideNavigationTransitionEffect.FromRight };
 
         public MojangLogin()
         {
