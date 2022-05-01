@@ -1,4 +1,3 @@
-[Windows x64](https://github.com/deltaDelete/Fluetta/releases/download/fluetta%2Fv1.1.0/fluetta-win64.zip)
 ## Fluetta
 
 Fluetta is a minecraft launcher with instance management made with ModernWPF.
