@@ -22,9 +22,9 @@
                 <Button Content="{x:Static res:Resources.Browse}" VerticalAlignment="Bottom" Click="BrowseJavaClick" Height="32"/>
             </ui:SimpleStackPanel>
             <ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
-                <TextBox ui:ControlHelper.Header="{x:Static res:Resources.Resolution}" x:Name="ResX" Width="128"/>
+                <TextBox ui:ControlHelper.Header="{x:Static res:Resources.Resolution}" x:Name="ResX" Width="128" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                 <TextBlock Text="x" VerticalAlignment="Bottom" Margin="0 10" Foreground="Gray"/>
-                <TextBox ui:ControlHelper.Header=" " x:Name="ResY" Width="128"/>
+                <TextBox ui:ControlHelper.Header=" " x:Name="ResY" Width="128" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                 <Button Content="{x:Static res:Resources.Reset}" VerticalAlignment="Bottom" Height="32" Click="ResResetClick" MinWidth="89"/>
             </ui:SimpleStackPanel>
             <TextBox ui:ControlHelper.Header="{x:Static res:Resources.JVMArgs}" x:Name="JVMArgs"/>

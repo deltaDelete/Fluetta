@@ -6,7 +6,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using static Fluetta.Auth;
-using static Fluetta.Pages.Settings;
 
 namespace Fluetta.Pages
 {
@@ -27,29 +26,29 @@ namespace Fluetta.Pages
                 ProgressBar.Visibility = Visibility.Visible;
                 PlayBtn.IsEnabled = false;
                 PlayBtn.Content = null;
-                string instance_path = $"{Fluetta.Instances.GetFolderByName(ComboBox.SelectedItem.ToString(), Fluetta.Instances.ListDirs(SettingsData.minecraftPath))}";
+                string instance_path = $"{Fluetta.Instances.GetFolderByName(ComboBox.SelectedItem.ToString(), Fluetta.Instances.ListDirs(Settings.MinecraftPath))}";
                 Fluetta.Instances.Instance selectedProfile = JsonConvert.DeserializeObject<Fluetta.Instances.Instance>(File.ReadAllText($"{instance_path}{Path.DirectorySeparatorChar}instance_settings.json"));
                 selectedProfile.LastUsed = DateTime.Now;
                 File.WriteAllText($"{instance_path}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(selectedProfile));
-                var launcher = new CMLauncher(FMinecraftPath.GetPath(SettingsData.minecraftPath, $"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{selectedProfile.InstanceDir}"));
+                var launcher = new CMLauncher(FMinecraftPath.GetPath(Settings.MinecraftPath, $"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{selectedProfile.InstanceDir}"));
                 launcher.FileChanged += Launcher_FileChanged;
                 launcher.ProgressChanged += Launcher_ProgressChanged;
                 var launchOption = new MLaunchOption
                 {
-                    MaximumRamMb = (!string.IsNullOrEmpty(selectedProfile.MaxRAM)) ? int.Parse(selectedProfile.MaxRAM) : int.Parse(SettingsData.maxRAM),
+                    MaximumRamMb = (!string.IsNullOrEmpty(selectedProfile.MaxRAM)) ? int.Parse(selectedProfile.MaxRAM) : int.Parse(Settings.MaxRAM),
                     Session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}login.json")).Session,
-                    ScreenWidth = (!string.IsNullOrEmpty(selectedProfile.ResX)) ? int.Parse(selectedProfile.ResX) : int.Parse(SettingsData.resX),
-                    ScreenHeight = (!string.IsNullOrEmpty(selectedProfile.ResY)) ? int.Parse(selectedProfile.ResY) : int.Parse(SettingsData.resY),
+                    ScreenWidth = (!string.IsNullOrEmpty(selectedProfile.ResX)) ? int.Parse(selectedProfile.ResX) : int.Parse(Settings.ResX),
+                    ScreenHeight = (!string.IsNullOrEmpty(selectedProfile.ResY)) ? int.Parse(selectedProfile.ResY) : int.Parse(Settings.ResY),
                 };
-                launchOption.JavaPath = (!string.IsNullOrEmpty(selectedProfile.JavaDir)) ? selectedProfile.JavaDir : SettingsData.javaPath != "default" ? SettingsData.javaPath : launchOption.JavaPath;
-                launchOption.JVMArguments = (!string.IsNullOrEmpty(selectedProfile.JVMArgs)) ? selectedProfile.JVMArgs.Split(" ") : (!string.IsNullOrEmpty(SettingsData.jvmArgs)) ? SettingsData.jvmArgs.Split(" ") : launchOption.JVMArguments;
+                launchOption.JavaPath = (!string.IsNullOrEmpty(selectedProfile.JavaDir)) ? selectedProfile.JavaDir : Settings.JavaPath != "default" ? Settings.JavaPath : launchOption.JavaPath;
+                launchOption.JVMArguments = (!string.IsNullOrEmpty(selectedProfile.JVMArgs)) ? selectedProfile.JVMArgs.Split(" ") : (!string.IsNullOrEmpty(Settings.JVMArgs)) ? Settings.JVMArgs.Split(" ") : launchOption.JVMArguments;
                 var process = await launcher.CreateProcessAsync(selectedProfile.VersionId, launchOption);
 
                 process.Start();
-                ProgressBar.Visibility = Visibility.Hidden;
-                ProgressBar.IsIndeterminate = true;
                 PlayBtn.IsEnabled = true;
                 PlayBtn.Content = Properties.Resources.PlayBtn;
+                if (Settings.CloseAfterStart)
+                    Application.Current.MainWindow.Close();
             }
             else
             {
@@ -71,10 +70,10 @@ namespace Fluetta.Pages
             }
             ComboBox.ItemsSource = vervar;
             */
-            ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(SettingsData.minecraftPath));
+            ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(Settings.MinecraftPath));
             if (!File.Exists($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}selected_profile.txt"))
             {
-                ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(SettingsData.minecraftPath));
+                ComboBox.ItemsSource = Fluetta.Instances.GetInstanceNames(Fluetta.Instances.ListDirs(Settings.MinecraftPath));
                 try
                 {
                     ComboBox.SelectedItem = "latestRelease";
@@ -99,20 +98,50 @@ namespace Fluetta.Pages
             System.Diagnostics.Debug.WriteLine("[!] Profile selected");
         }
         // Event Handler. Show download progress
+        bool isStarting = false;
         private void Launcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"[!] Download progress - {e}");
-            ProgressBar.IsIndeterminate = false;
-            ProgressBar.Maximum = 100;
+            if (!isStarting)
+            {
+                Application.Current.MainWindow.TaskbarItemInfo = new System.Windows.Shell.TaskbarItemInfo
+                {
+                    ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal
+                };
+                ProgressBar.Maximum = 100;
+                ProgressBar.IsIndeterminate = false;
+                isStarting = true;
+            }
+            Application.Current.MainWindow.TaskbarItemInfo.ProgressValue = e.ProgressPercentage;
             ProgressBar.Value = e.ProgressPercentage;
+            if (e.ProgressPercentage == 100)
+            {
+                Application.Current.MainWindow.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                ProgressBar.IsIndeterminate = true;
+                ProgressBar.Visibility = Visibility.Hidden;
+                isStarting = false;
+            }
         }
 
+        bool isDownloading = false;
         private void Launcher_FileChanged(CmlLib.Core.Downloader.DownloadFileChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"[!] File changed progress - {e}");
-            ProgressBar.IsIndeterminate = false;
-            ProgressBar.Maximum = e.TotalFileCount;
-            ProgressBar.Value = e.ProgressedFileCount;
+            if (!isDownloading)
+            {
+                FilesProcessedProgressBar.IsIndeterminate = false;
+                FilesProcessedProgressBar.Visibility = Visibility.Visible;
+                FilesProcessedTextBox.Visibility = Visibility.Visible;
+                FilesProcessedProgressBar.Maximum = e.TotalFileCount;
+                isDownloading = true;
+            }
+            FilesProcessedTextBox.Text = $"{Properties.Resources.DownloadingFiles} {e.ProgressedFileCount}/{e.TotalFileCount}";
+            FilesProcessedProgressBar.Value = e.ProgressedFileCount;
+            if (e.ProgressedFileCount == e.TotalFileCount)
+            {
+                FilesProcessedProgressBar.IsIndeterminate = true;
+                FilesProcessedProgressBar.Visibility = Visibility.Hidden;
+                FilesProcessedTextBox.Visibility = Visibility.Hidden;
+                isDownloading = false;
+            }
         }
     }
 }

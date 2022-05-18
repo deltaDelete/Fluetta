@@ -1,4 +1,4 @@
-﻿<Page x:Class="Fluetta.Pages.Settings"
+﻿<Page x:Class="Fluetta.Pages.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -49,7 +49,7 @@
                         <ui:SimpleStackPanel Spacing="5">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.MinecraftPath}"/>
                             <ui:SimpleStackPanel Spacing="5" Orientation="Horizontal">
-                                <TextBox MinWidth="256" MaxWidth="512" x:Name="PathBox"/>
+                                <TextBox MinWidth="256" MaxWidth="512" x:Name="PathBox" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                                 <Button HorizontalAlignment="Right" Content="{x:Static res:Resources.Browse}" Click="BrowseClick"/>
                                 <Button Content="{x:Static res:Resources.Reset}" Click="ResetPath"/>
                             </ui:SimpleStackPanel>
@@ -57,30 +57,33 @@
                         <ui:SimpleStackPanel Spacing="5">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.Resolution}"/>
                             <ui:SimpleStackPanel Spacing="5" Orientation="Horizontal">
-                                <TextBox x:Name="ResX" Text="856"/>
+                                <TextBox x:Name="ResX" Text="856" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                                 <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="Gray" Text="x" VerticalAlignment="Center"/>
-                                <TextBox x:Name="ResY" IsEnabled="True" Text="482"/>
+                                <TextBox x:Name="ResY" IsEnabled="True" Text="482" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                                 <Button Content="{x:Static res:Resources.Reset}" Click="ResetResolution"/>
                             </ui:SimpleStackPanel>
                         </ui:SimpleStackPanel>
                         <ui:SimpleStackPanel Spacing="5">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.JavaPath}"/>
                             <ui:SimpleStackPanel Spacing="5" Orientation="Horizontal">
-                                <TextBox MinWidth="256" MaxWidth="512" x:Name="JavaPath"/>
+                                <TextBox MinWidth="256" MaxWidth="512" x:Name="JavaPath" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                                 <Button Content="{x:Static res:Resources.Browse}" Click="BrowseJavaClick"/>
                                 <Button Content="{x:Static res:Resources.Reset}" Click="ResetJavaPath"/>
                             </ui:SimpleStackPanel>
                         </ui:SimpleStackPanel>
                         <ui:SimpleStackPanel Spacing="5">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.JVMArgs}"/>
-                            <TextBox MinWidth="256" MaxWidth="512" x:Name="JVMArgs" HorizontalAlignment="Left"/>
+                            <TextBox MinWidth="256" MaxWidth="512" x:Name="JVMArgs" HorizontalAlignment="Left" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                         </ui:SimpleStackPanel>
                         <ui:SimpleStackPanel Spacing="5">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static res:Resources.MaxRAM}"/>
                             <ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBox MinWidth="64" MaxWidth="256" x:Name="MAXRAM" HorizontalAlignment="Left"/>
+                                <TextBox MinWidth="64" MaxWidth="256" x:Name="MAXRAM" HorizontalAlignment="Left" ui:TextBoxHelper.IsDeleteButtonVisible="false"/>
                                 <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Static res:Resources.MB}" VerticalAlignment="Center"/>
                             </ui:SimpleStackPanel>
+                        </ui:SimpleStackPanel>
+                        <ui:SimpleStackPanel Spacing="5">
+                            <CheckBox x:Name="CloseAfterStartCheckBox" Content="{x:Static res:Resources.CloseAfterStart}"/>
                         </ui:SimpleStackPanel>
                     </ui:SimpleStackPanel>
                 </ScrollViewer>

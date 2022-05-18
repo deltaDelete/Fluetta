@@ -142,6 +142,15 @@ namespace Fluetta.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Close launcher after game starts?.
+        /// </summary>
+        public static string CloseAfterStart {
+            get {
+                return ResourceManager.GetString("CloseAfterStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Some settings will be applied after application restart.
         /// </summary>
         public static string ContextDialogApplied {
@@ -210,6 +219,15 @@ namespace Fluetta.Properties {
         public static string DeletionDialog {
             get {
                 return ResourceManager.GetString("DeletionDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Downloading files.
+        /// </summary>
+        public static string DownloadingFiles {
+            get {
+                return ResourceManager.GetString("DownloadingFiles", resourceCulture);
             }
         }
         

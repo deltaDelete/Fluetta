@@ -2,8 +2,6 @@
 using System.Windows;
 using Newtonsoft.Json;
 using System.IO;
-using System.Collections.Generic;
-using static Fluetta.Pages.Settings;
 using System.Collections.ObjectModel;
 
 namespace Fluetta
@@ -20,31 +18,22 @@ namespace Fluetta
                 Formatting = Formatting.Indented
             };
             Directory.CreateDirectory($".{Path.DirectorySeparatorChar}settings");
-            if (File.Exists($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json"))
+            if (!Directory.Exists(Settings.MinecraftPath))
             {
-                SettingsData.SetFromObject(JsonConvert.DeserializeObject<SettingsData.SettingsDataObject>(File.ReadAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json")));
-            } else
-            {
-                SettingsData.SettingsDataObject settings = SettingsData.ToObject();
-                File.WriteAllText($".{Path.DirectorySeparatorChar}settings{Path.DirectorySeparatorChar}launcher_settings.json", JsonConvert.SerializeObject(settings));
-                SettingsData.SetFromObject(settings);
+                Directory.CreateDirectory(Settings.MinecraftPath);
             }
-            if (!Directory.Exists(SettingsData.minecraftPath))
+            if (!File.Exists(Settings.MinecraftPath + Path.DirectorySeparatorChar + "launcher_profiles.json"))
             {
-                Directory.CreateDirectory(SettingsData.minecraftPath);
+                File.WriteAllText(Settings.MinecraftPath + Path.DirectorySeparatorChar + "launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
             }
-            if (!File.Exists(SettingsData.minecraftPath + Path.DirectorySeparatorChar + "launcher_profiles.json"))
+            Instances.InstanceList = Instances.ListDirs(Settings.MinecraftPath);
+            if (File.Exists($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}instance_settings.json"))
             {
-                File.WriteAllText(SettingsData.minecraftPath + Path.DirectorySeparatorChar + "launcher_profiles.json", "{\n  \"profiles\": {\n\n  }\n}");
-            }
-            Instances.InstanceList = Instances.ListDirs(SettingsData.minecraftPath);
-            if (File.Exists($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}instance_settings.json"))
-            {
-                File.Delete($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}instance_settings.json");
+                File.Delete($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}instance_settings.json");
             }
             versionIds = Versions.VersionIds();
             latestRelease = Versions.LatestRelease();
-            if (!Directory.Exists($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease"))
+            if (!Directory.Exists($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease"))
             {
                 Fluetta.Instances.Instance instance = new Fluetta.Instances.Instance
                 {
@@ -54,14 +43,14 @@ namespace Fluetta
                     LastUsed = System.DateTime.Now,
                     InstanceDir = "latestRelease",
                     JavaDir = null,
-                    ResX = SettingsData.resX,
-                    ResY = SettingsData.resY,
+                    ResX = Settings.ResX,
+                    ResY = Settings.ResY,
                     JVMArgs = null,
-                    MaxRAM = SettingsData.maxRAM
+                    MaxRAM = Settings.MaxRAM
                 };
                 System.Diagnostics.Debug.WriteLine("[!] Latest release chosen");
-                Directory.CreateDirectory($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease");
-                File.WriteAllText($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(instance));
+                Directory.CreateDirectory($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease");
+                File.WriteAllText($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}latestRelease{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(instance));
             }
             InitializeComponent();
 
@@ -72,12 +61,12 @@ namespace Fluetta
                 ObservableCollection<string> versionIds = new ObservableCollection<string>();
                 try
                 {
-                    MainWindow.versions = new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetAllVersions();
+                    MainWindow.versions = new CmlLib.Core.CMLauncher(new CmlLib.Core.MinecraftPath(Settings.MinecraftPath)).GetAllVersions();
                 }
                 catch
                 {
                     MessageBox.Show("No internet connection available, launcher won't work");
-                    MainWindow.versions = new CmlLib.Core.VersionLoader.LocalVersionLoader(new CmlLib.Core.MinecraftPath(SettingsData.minecraftPath)).GetVersionMetadatas();
+                    MainWindow.versions = new CmlLib.Core.VersionLoader.LocalVersionLoader(new CmlLib.Core.MinecraftPath(Settings.MinecraftPath)).GetVersionMetadatas();
                 }
                 foreach (CmlLib.Core.Version.MVersionMetadata versionMetadata in versions)
                 {
@@ -108,7 +97,7 @@ namespace Fluetta
         {
             if (args.IsSettingsSelected)
             {
-                ContentFrame.Navigate(typeof(Settings));
+                ContentFrame.Navigate(typeof(SettingsPage));
             } else
             {
                 ModernWpf.Controls.NavigationViewItem item = args.SelectedItem as ModernWpf.Controls.NavigationViewItem;

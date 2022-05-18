@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using ModernWpf.Controls;
-using static Fluetta.Pages.Settings;
 
 namespace Fluetta.Pages
 {
@@ -26,8 +25,8 @@ namespace Fluetta.Pages
 
         private void ResResetClick(object sender, RoutedEventArgs e)
         {
-            ResX.Text = SettingsData.resX;
-            ResY.Text = SettingsData.resY;
+            ResX.Text = Settings.ResX;
+            ResY.Text = Settings.ResY;
         }
     }
 }

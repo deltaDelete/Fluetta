@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using static Fluetta.Pages.Settings;
 using static Fluetta.Instances;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -39,14 +38,14 @@ namespace Fluetta.Pages
             ModernWpf.Controls.ContentDialogResult result = await contentDialog.ShowAsync();
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
             {
-                Directory.Delete($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}", true);
+                Directory.Delete($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}", true);
                 SetItemsSource(InstanceGrid);
                 System.Diagnostics.Debug.WriteLine($"[!] {sndr.Name} is successfully deleted");
             }
         }
         public static void SetItemsSource(ModernWpf.Controls.GridView gridView)
         {
-            Items = GetInstanceObjects(SettingsData.minecraftPath);
+            Items = GetInstanceObjects(Settings.MinecraftPath);
             gridView.ItemsSource = Items;
         }
         private async void EditClick(object sender, RoutedEventArgs e)
@@ -66,7 +65,7 @@ namespace Fluetta.Pages
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
             {
                 System.Diagnostics.Debug.WriteLine("[!] Primary button pressed");
-                await File.WriteAllTextAsync($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(new Instance()
+                await File.WriteAllTextAsync($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(new Instance()
                 {
                     Name = editDialog.Name.Text,
                     VersionId = editDialog.Version.Text,
@@ -82,7 +81,7 @@ namespace Fluetta.Pages
                 ));
                 if (editDialog.FolderName.Text != sndr.InstanceDir)
                 {
-                    Directory.Move($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}", $"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{editDialog.FolderName.Text}");
+                    Directory.Move($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{sndr.InstanceDir}", $"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{editDialog.FolderName.Text}");
                 }
                 SetItemsSource(InstanceGrid);
             }
@@ -129,8 +128,8 @@ namespace Fluetta.Pages
                         JVMArgs = createDialog.JVMArgs.Text,
                         MaxRAM = createDialog.MaxRAM.Text
                     };
-                    Directory.CreateDirectory($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{instance.InstanceDir}");
-                    await File.WriteAllTextAsync($"{SettingsData.minecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{instance.InstanceDir}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(instance));
+                    Directory.CreateDirectory($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{instance.InstanceDir}");
+                    await File.WriteAllTextAsync($"{Settings.MinecraftPath}{Path.DirectorySeparatorChar}instances{Path.DirectorySeparatorChar}{instance.InstanceDir}{Path.DirectorySeparatorChar}instance_settings.json", JsonConvert.SerializeObject(instance));
                     SetItemsSource(InstanceGrid);
                 }
             }
